@@ -1,0 +1,15 @@
+﻿
+
+.digit {
+  background-color: #ebe6e6;
+  text-align: center;
+  width: 1.5em;
+  border-radius: 10px;
+  border: 2px solid #a5a5a5;
+  padding: 0.2em;
+}
+
+  /* Remove outline when input has focus */
+  .digit:focus {
+    outline: none;
+  }

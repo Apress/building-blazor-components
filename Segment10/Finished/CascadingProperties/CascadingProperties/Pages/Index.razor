@@ -1,0 +1,65 @@
+﻿@page "/"
+
+<h1>Please enter your pin code.</h1>
+
+<InputDigits @ref="inputDigits" @bind-Digits="@Code" OnDigitsComplete="@DigitsComplete">
+
+  @*@for (int i = 0; i < 4; i += 1)
+  {
+    int pos = i;
+    <InputDigit Pos="@pos" InitialFocus="@(pos == 0)" />
+  }*@
+
+  <WrappedInputDigit nrOfDigits="4"/>
+</InputDigits>
+
+@if (correct)
+{
+  <div>
+    Correct!
+  </div>
+}
+
+@if (incorrect)
+{
+  <div>
+    Incorrect!
+  </div>
+}
+
+@code {
+
+  private InputDigits inputDigits;
+
+  private string code;
+  public string Code
+  {
+    get => code;
+    set { code = value; StateHasChanged(); }
+  }
+
+  public Action<string> CodeChanged { get; set; }
+
+  private bool correct, incorrect;
+
+  private string Tooltip(int digit)
+  => "Digit {digit+1}";
+
+  public void DigitsComplete(string digits)
+  {
+    if (digits == "1234")
+    {
+      correct = true;
+    }
+    else
+    {
+      incorrect = true;
+    }
+  }
+
+  public async Task Reset()
+  {
+    await inputDigits.ResetAsync();
+  }
+
+}

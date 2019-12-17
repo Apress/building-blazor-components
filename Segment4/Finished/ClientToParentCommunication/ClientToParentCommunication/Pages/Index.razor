@@ -1,0 +1,27 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<Counter Title="My Cool Blazor Component" 
+         @bind-CurrentValue="@counter" />
+
+<div>
+  Counter: @counter
+</div>
+
+<Alert Show="@(counter > 3)">
+  <p>Hey, your counter is bigger than 3!</p>
+</Alert>
+
+@code {
+
+  private int counter = 0;
+
+  //private void CounterChanged(int newCounter)
+  //{
+  //  counter = newCounter;
+  //  this.StateHasChanged();
+  //}
+}

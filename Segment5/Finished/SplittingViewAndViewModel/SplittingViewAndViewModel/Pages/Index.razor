@@ -1,0 +1,25 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<Counter Title="My Cool Blazor Component" 
+         @bind-CurrentValue="@counter" />
+
+
+<DismissableAlert Show="@(counter > 3)">
+  <p>Hey, counter is too large!</p>
+</DismissableAlert>
+
+
+<Timer Active="@(counter > 3)" Tick="@ResetCounter" TimeInSeconds="3"/>
+
+@code {
+
+  private int counter = 0;
+
+  private void ResetCounter()
+  => counter = 0;
+
+}

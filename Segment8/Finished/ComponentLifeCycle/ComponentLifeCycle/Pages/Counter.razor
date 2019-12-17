@@ -1,0 +1,42 @@
+﻿
+@if (!string.IsNullOrEmpty(Title))
+{
+  <h3>@Title</h3>
+}
+
+<p>@Label : @CurrentValue</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+
+  [Parameter]
+  public string Title { get; set; }
+
+  [Parameter]
+  public string Label { get; set; } = "Current Count";
+
+  private int currentValue;
+
+  [Parameter]
+  public int CurrentValue
+  {
+    get => currentValue;
+    set
+    {
+      if (currentValue != value)
+      {
+        currentValue = value;
+        CurrentValueChanged.InvokeAsync(currentValue);
+      }
+    }
+  }
+
+  [Parameter]
+  public EventCallback<int> CurrentValueChanged { get; set; }
+
+  void IncrementCount()
+  {
+    CurrentValue += 1;
+  }
+}

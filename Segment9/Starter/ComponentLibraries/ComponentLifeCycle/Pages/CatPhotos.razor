@@ -1,0 +1,33 @@
+﻿<Photo ImageSrc="@CurrentImage" />
+
+@implements IDisposable
+
+@code {
+
+  public void Dispose()
+  {
+    // clean up local resources...
+  }
+
+  private string[] urls = new string[]
+  {
+    "/images/cat1.jpg",
+    "/images/cat2.jpg",
+    "/images/cat3.jpg"
+      };
+
+  private int currentImageIndex = 0;
+
+  private string CurrentImage => urls[currentImageIndex];
+
+  public int CurrentImageIndex
+  {
+    get => currentImageIndex;
+    set => currentImageIndex = value % urls.Length;
+  }
+
+  public void NextCat() {
+    CurrentImageIndex += 1;
+    this.StateHasChanged();
+  }
+}

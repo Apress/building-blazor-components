@@ -1,0 +1,76 @@
+﻿@namespace InputDigitsComponentLib
+
+<CascadingValue Value="@this" >
+  @ChildContent
+</CascadingValue>
+
+@code {
+
+  [Parameter]
+  public RenderFragment ChildContent { get; set; }
+
+  private string digits;
+
+  [Parameter]
+  public string Digits
+  {
+    get => digits;
+    set
+    {
+      if (this.digits != value)
+      {
+        this.digits = value.PadRight(inputs.Count);
+        DigitsChanged?.Invoke(digits);
+      }
+    }
+  }
+
+  [Parameter]
+  public Action<string> DigitsChanged { get; set; }
+
+  [Parameter]
+  public EventCallback<string> OnDigitsComplete { get; set; }
+
+  private DigitCollection inputs = new DigitCollection();
+
+  public void RegisterInputDigits(InputDigit inputDigit, int pos, bool initialFocus)
+  {
+    inputs.Add(inputDigit, pos, initialFocus);
+
+    if (this.Digits != null)
+    {
+      inputDigit.SetDigitFromParent(this.Digits.AtPos(pos));
+    }
+    inputDigit.DigitChanged += async (value) =>
+    {
+      this.Digits = this.Digits.ReplaceAt(pos, value);
+      await HandleDigitSet(inputDigit, pos);
+    };
+  }
+
+  protected override void OnInitialized()
+  {
+    Console.WriteLine("OnInit InputDigits");
+    inputs.InputsComplete += async (_, __)
+      => await OnDigitsComplete.InvokeAsync(Digits);
+  }
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
+    {
+      await inputs.FocusAsync();
+    }
+  }
+
+  private async Task HandleDigitSet(InputDigit currentInput, int currentPos)
+  {
+    await inputs.MoveFocusToNextAsync(currentPos);
+  }
+
+  public async Task ResetAsync()
+  {
+    Digits = string.Empty;
+    await inputs.ResetAsync();
+  }
+}

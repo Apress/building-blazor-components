@@ -1,0 +1,62 @@
+﻿@using System.Text;
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+
+@namespace  InputDigitsComponentLib
+
+@inject IJSRuntime jsRuntime
+
+<input type="text" class="digit" @ref="digitInput"
+       @bind="Digit" @bind:event="oninput" />
+
+@code  {
+
+  ElementReference digitInput;
+
+  [Parameter]
+  public int Pos { get; set; }
+
+  [Parameter]
+  public bool InitialFocus { get; set; }
+
+  private InputDigits digits;
+
+  [CascadingParameter()]
+  public InputDigits Digits { get; set; }
+
+  private string digit = string.Empty;
+
+  public string Digit
+  {
+    get => digit;
+    set
+    {
+      this.digit = value;
+      DigitChanged?.Invoke(this.digit);
+    }
+  }
+
+  public Action<string> DigitChanged { get; set; }
+
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+    this.Digits.RegisterInputDigits(this, Pos, this.InitialFocus);
+  }
+
+  internal void SetDigitFromParent(string digit)
+  {
+    this.Digit = digit;
+  }
+
+  public async Task FocusAsync()
+  {
+    await jsRuntime.InvokeAsync<object>("jsInputDigit.focus", digitInput);
+  }
+
+  public async Task BlurAsync()
+  {
+    await jsRuntime.InvokeAsync<object>("jsInputDigit.blur", digitInput);
+  }
+
+}

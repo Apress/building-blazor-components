@@ -1,0 +1,22 @@
+﻿@if (Show)
+{
+  <div class="alert alert-warning alert-dismissible fade show"
+       role="alert">
+    @ChildContent
+    <button type="button" class="close" data-dismiss="alert"
+            aria-label="Close" @onclick="@Dismiss">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+}
+
+
+@code {
+  [Parameter]
+  public bool Show { get; set; }
+
+  [Parameter]
+  public RenderFragment ChildContent { get; set; }
+
+  public void Dismiss() => this.Show = false;
+}

@@ -1,0 +1,12 @@
+﻿<Wrapper>
+  @for( int i = 0; i < nrOfDigits; i +=1)
+  {
+    int pos = i;
+    <InputDigit Pos="@pos" InitialFocus="@(pos == 0)"/>
+  }
+</Wrapper>
+
+@code {
+  [Parameter]
+  public int nrOfDigits { get; set; }
+}

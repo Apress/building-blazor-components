@@ -1,0 +1,16 @@
+﻿ @page "/"
+
+<h1>Hello Cats!</h1>
+
+<CatPhotos @ref="cats" />
+
+<!-- For the moment it is very important to set the Active attribute last!! -->
+<!-- Timer will execute NextCat only once, so don't wait for the third cat  -->
+<Timer TimeInSeconds="3" Tick="@NextCat"  Active="@true" />
+
+@code {
+
+  private CatPhotos cats;
+
+  public void NextCat() => cats.NextCat();
+}

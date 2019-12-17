@@ -1,0 +1,18 @@
+﻿ @page "/"
+
+<h1>Hello Cats!</h1>
+
+<CatPhotos @ref="cats" />
+
+<Timer Active="@true" Tick="@NextCat" TimeInSeconds="3"  />
+
+<RazorClassLibrary1.Component1/>
+
+<Component1/>
+
+@code {
+
+  private CatPhotos cats;
+
+  public void NextCat() => cats.NextCat();
+}
